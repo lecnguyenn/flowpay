@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: flowpay
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flowpay
+    username: postgres
+    password: 14091999
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    properties:
+        hibernate:
+          format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+security:
+  jwt:
+#    secret: ${JWT_SECRET}
+    secret: 'E1Es+TUZ0n66Z6FlLwsv3uxrBf20C5lN/b0jwPfG/uA='
+    issuer: flowpay
+    access-token-expiration: 15m
+    refresh-token-expiration: 7d
