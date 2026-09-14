@@ -16,7 +16,8 @@ public enum ErrorCode {
 
     INVALID_CREDENTIALS("INVALID_CREDENTIALS", "Tên đăng nhâp hoặc mật khẩu không đúng", HttpStatus.BAD_REQUEST),
     USER_ACCOUNT_LOCKED("USER_ACCOUNT_LOCKED", "Tài khoản đã bị khoá", HttpStatus.FORBIDDEN),
-    USER_ACCOUNT_DISABLED("USER_ACCOUNT_DISABLED", "Tài khoản đã bị vô hiệu hoá", HttpStatus.FORBIDDEN);
+    USER_ACCOUNT_DISABLED("USER_ACCOUNT_DISABLED", "Tài khoản đã bị vô hiệu hoá", HttpStatus.FORBIDDEN),
+    INVALID_REFRESH_TOKEN("INVALID_REFRESH_TOKEN", "refresh token không hợp lệ", HttpStatus.UNAUTHORIZED);
 
     private final String code;
     private final String message;

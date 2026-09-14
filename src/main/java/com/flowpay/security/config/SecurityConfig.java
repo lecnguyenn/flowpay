@@ -1,11 +1,10 @@
 package com.flowpay.security.config;
 
 
-import com.flowpay.security.config.JwtProperties;
+import jakarta.servlet.DispatcherType;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,7 +20,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
+            HttpSecurity http,
+            JwtAuthenticationConverter jwtAuthenticationConverter
     ) throws Exception{
         return http.csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -34,18 +34,19 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize ->
                         authorize
+                                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                                 .requestMatchers(
-                                        "/api/v1/auth/*"
+                                        "/api/v1/auth/**"
                                 )
                                 .permitAll()
 
-//                                .requestMatchers("/api/v1/admin/*")
-//                                .hasRole("ADMIN")
+                                .requestMatchers("/api/v1/admin/**")
+                                .hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(Customizer.withDefaults()))
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
                 .build();
     }
 
@@ -53,7 +54,7 @@ public class SecurityConfig {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
-        authoritiesConverter.setAuthoritiesClaimDelimiter("role");
+        authoritiesConverter.setAuthoritiesClaimName("roles");
         authoritiesConverter.setAuthorityPrefix("ROLE_");
 
         JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();

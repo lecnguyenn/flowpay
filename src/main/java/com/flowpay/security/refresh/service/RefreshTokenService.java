@@ -43,6 +43,7 @@ public class RefreshTokenService {
         return rawToken;
     }
 
+
     private String generateRawToken() {
         byte[] randomBytes = new byte[TOKEN_SIZE_IN_BYTES];
 
