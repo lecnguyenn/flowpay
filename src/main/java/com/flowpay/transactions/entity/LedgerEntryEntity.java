@@ -38,11 +38,11 @@ public class LedgerEntryEntity {
     @Column(nullable = false, precision = 19, scale = 0)
     private BigDecimal amount;
 
-    @Column(name = "amount_before", nullable = false, precision = 19, scale = 0)
-    private BigDecimal amountBefore;
+    @Column(name = "balance_before", nullable = false, precision = 19, scale = 0)
+    private BigDecimal balanceBefore;
 
-    @Column(name = "amount_after", nullable = false, precision = 19, scale = 0)
-    private BigDecimal amountAfter;
+    @Column(name = "balance_after", nullable = false, precision = 19, scale = 0)
+    private BigDecimal balanceAfter;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

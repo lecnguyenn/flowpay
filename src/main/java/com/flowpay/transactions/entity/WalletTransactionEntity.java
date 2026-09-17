@@ -1,6 +1,7 @@
 package com.flowpay.transactions.entity;
 
 import com.flowpay.common.entity.AuditableEntity;
+import com.flowpay.transactions.enums.TransactionStatus;
 import com.flowpay.transactions.enums.TransactionType;
 import com.flowpay.user.entity.UserEntity;
 import com.flowpay.wallet.enums.CurrencyCode;
@@ -33,6 +34,10 @@ public class WalletTransactionEntity extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransactionType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TransactionStatus status;
 
     @Column(nullable = false, precision = 19, scale = 0)
     private BigDecimal amount;

@@ -24,7 +24,7 @@ public class WalletEntity extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(name = "wallet_number", nullable = false, length = 20)
     private String walletNumber;

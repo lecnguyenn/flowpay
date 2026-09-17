@@ -17,7 +17,13 @@ public enum ErrorCode {
     INVALID_CREDENTIALS("INVALID_CREDENTIALS", "Tên đăng nhâp hoặc mật khẩu không đúng", HttpStatus.BAD_REQUEST),
     USER_ACCOUNT_LOCKED("USER_ACCOUNT_LOCKED", "Tài khoản đã bị khoá", HttpStatus.FORBIDDEN),
     USER_ACCOUNT_DISABLED("USER_ACCOUNT_DISABLED", "Tài khoản đã bị vô hiệu hoá", HttpStatus.FORBIDDEN),
-    INVALID_REFRESH_TOKEN("INVALID_REFRESH_TOKEN", "refresh token không hợp lệ", HttpStatus.UNAUTHORIZED);
+    INVALID_REFRESH_TOKEN("INVALID_REFRESH_TOKEN", "refresh token không hợp lệ", HttpStatus.UNAUTHORIZED),
+
+    WALLET_NOT_ACTIVE("WALLET_NOT_ACTIVE", "Ví không hoạt động", HttpStatus.BAD_REQUEST),
+    SAME_WALLET_TRANSFER("TRANSFER_001", "Không thể chuyển tiền đến cùng 1 ví", HttpStatus.BAD_REQUEST),
+    INSUFFICIENT_BALANCE("INSUFFICIENT_BALANCE", "Số dư không đủ để thực hiện", HttpStatus.BAD_REQUEST),
+    CURRENCY_MISMATCH("CURRENCY_MISMATCH", "Hai ví không cùng loại tiền tệ", HttpStatus.BAD_REQUEST);
+
 
     private final String code;
     private final String message;
