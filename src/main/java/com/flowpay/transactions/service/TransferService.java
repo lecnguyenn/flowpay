@@ -5,7 +5,7 @@ import com.flowpay.common.exception.ErrorCode;
 import com.flowpay.transactions.dto.request.TransferRequest;
 import com.flowpay.transactions.dto.response.TransferResponse;
 import com.flowpay.transactions.entity.LedgerEntryEntity;
-import com.flowpay.transactions.entity.LedgerEntryRepository;
+import com.flowpay.transactions.repository.LedgerEntryRepository;
 import com.flowpay.transactions.entity.WalletTransactionEntity;
 import com.flowpay.transactions.enums.LedgerEntryType;
 import com.flowpay.transactions.enums.TransactionStatus;
@@ -16,6 +16,7 @@ import com.flowpay.wallet.enums.WalletStatus;
 import com.flowpay.wallet.repository.WalletRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TransferService {
 
@@ -38,6 +40,11 @@ public class TransferService {
             Long senderUserId,
             TransferRequest request
     ) {
+        log.info("Transfer from senderUserId={}, amount={}, receiverUserId={}, idempotencyKey={}", senderUserId,
+                request.amount(),
+                request.receiverWalletId(),
+                request.idempotencyKey()
+        );
         var existingTransaction = transactionRepository.findByIdempotencyKey(request.idempotencyKey());
         if (existingTransaction.isPresent()) {
             return  toResponse(existingTransaction.get());
@@ -58,6 +65,7 @@ public class TransferService {
         WalletEntity senderWallet = lockedWallets.get(currentSenderWallet.getId());
         WalletEntity receiverWallet = lockedWallets.get(request.receiverWalletId());
 
+        log.info("senderwallet = {}, receiverWallet = {}", senderWallet, receiverWallet);
         if(senderWallet == null || receiverWallet == null) {
             throw new AppException(ErrorCode.WALLET_NOT_FOUND);
         }
@@ -74,7 +82,7 @@ public class TransferService {
         BigDecimal receiverBalanceBefore = receiverWallet.getBalance();
 
         BigDecimal senderBalanceAfter = senderBalanceBefore.subtract(request.amount());
-        BigDecimal receiverBalanceAfter = senderBalanceBefore.add(request.amount());
+        BigDecimal receiverBalanceAfter = receiverBalanceBefore.add(request.amount());
 
         senderWallet.setBalance(senderBalanceAfter);
         receiverWallet.setBalance(receiverBalanceAfter);
@@ -91,7 +99,7 @@ public class TransferService {
                         .description(request.description())
                         .build()
         );
-
+        log.info("Transaction save successfully: referenceCode = {}", transaction.getReferenceCode());
         LedgerEntryEntity debitEntry = LedgerEntryEntity.builder()
                 .transaction(transaction)
                 .wallet(senderWallet)
