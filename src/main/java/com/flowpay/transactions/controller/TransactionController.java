@@ -3,6 +3,7 @@ package com.flowpay.transactions.controller;
 
 import com.flowpay.common.response.ApiResponse;
 import com.flowpay.common.response.PageResponse;
+import com.flowpay.transactions.dto.response.TransactionDetailResponse;
 import com.flowpay.transactions.dto.response.TransactionHistoryResponse;
 import com.flowpay.transactions.service.TransactionHistoryService;
 import jakarta.validation.constraints.Max;
@@ -12,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
@@ -39,7 +37,14 @@ public class TransactionController {
         PageResponse<TransactionHistoryResponse> response = transactionHistoryService.getHistory(userId, page,size);
 
         return ResponseEntity.ok(ApiResponse.success("Lấy lịch sử giao dịch thành công", response));
+    }
 
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<ApiResponse<TransactionDetailResponse>> getDetail(@AuthenticationPrincipal Jwt jwt,
+                                                                            @PathVariable Long transactionId) {
+        Long userId = Long.valueOf(jwt.getSubject());
+        TransactionDetailResponse response = transactionHistoryService.getDetail(userId, transactionId);
 
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 }

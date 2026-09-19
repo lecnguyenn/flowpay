@@ -22,7 +22,8 @@ public enum ErrorCode {
     WALLET_NOT_ACTIVE("WALLET_NOT_ACTIVE", "Ví không hoạt động", HttpStatus.BAD_REQUEST),
     SAME_WALLET_TRANSFER("TRANSFER_001", "Không thể chuyển tiền đến cùng 1 ví", HttpStatus.BAD_REQUEST),
     INSUFFICIENT_BALANCE("INSUFFICIENT_BALANCE", "Số dư không đủ để thực hiện", HttpStatus.BAD_REQUEST),
-    CURRENCY_MISMATCH("CURRENCY_MISMATCH", "Hai ví không cùng loại tiền tệ", HttpStatus.BAD_REQUEST);
+    CURRENCY_MISMATCH("CURRENCY_MISMATCH", "Hai ví không cùng loại tiền tệ", HttpStatus.BAD_REQUEST),
+    TRANSACTION_NOT_FOUND("TRANSACTION_NOT_FOUND", "Không tìm thấy giao dịch", HttpStatus.NOT_FOUND);
 
 
     private final String code;
