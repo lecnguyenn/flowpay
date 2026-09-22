@@ -3,6 +3,7 @@ package com.flowpay.wallet.repository;
 import com.flowpay.user.entity.UserEntity;
 import com.flowpay.wallet.entity.WalletEntity;
 import com.flowpay.wallet.enums.CurrencyCode;
+import com.flowpay.wallet.enums.WalletType;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -33,4 +34,6 @@ public interface WalletRepository extends JpaRepository<WalletEntity, Long> {
     List<WalletEntity> findAllByIdForUpdate(@Param("walletIds") Collection<Long> walletIds);
 
     Optional<WalletEntity> findByOwner_Id(Long userId);
+
+    Optional<WalletEntity> findByWalletTypeAndCurrency(WalletType walletType, CurrencyCode currency);
 }
