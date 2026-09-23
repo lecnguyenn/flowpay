@@ -11,6 +11,7 @@ import com.flowpay.transactions.enums.LedgerEntryType;
 import com.flowpay.transactions.enums.TransactionStatus;
 import com.flowpay.transactions.enums.TransactionType;
 import com.flowpay.transactions.repository.WalletTransactionRepository;
+import com.flowpay.utils.TransactionReferenceGenerator;
 import com.flowpay.wallet.entity.WalletEntity;
 import com.flowpay.wallet.enums.WalletStatus;
 import com.flowpay.wallet.repository.WalletRepository;
@@ -89,7 +90,7 @@ public class TransferService {
 
         WalletTransactionEntity transaction = transactionRepository.save(
                 WalletTransactionEntity.builder()
-                        .referenceCode(genReferenceCode())
+                        .referenceCode(TransactionReferenceGenerator.generator())
                         .idempotencyKey(request.idempotencyKey())
                         .type(TransactionType.TRANSFER)
                         .status(TransactionStatus.SUCCESS)
@@ -169,14 +170,14 @@ public class TransferService {
         }
     }
 
-    private String genReferenceCode() {
-        String randomPart = UUID.randomUUID()
-                .toString()
-                .replace("-", "")
-                .substring(0,12)
-                .toUpperCase();
-        return "TXN-" + randomPart;
-    }
+//    private String genReferenceCode() {
+//        String randomPart = UUID.randomUUID()
+//                .toString()
+//                .replace("-", "")
+//                .substring(0,12)
+//                .toUpperCase();
+//        return "TXN-" + randomPart;
+//    }
 
 
 }
