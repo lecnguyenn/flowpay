@@ -2,6 +2,7 @@ package com.flowpay.transactions.service;
 
 import com.flowpay.common.exception.AppException;
 import com.flowpay.common.exception.ErrorCode;
+import com.flowpay.event.TransactionCompletedEvent;
 import com.flowpay.transactions.dto.request.TransferRequest;
 import com.flowpay.transactions.dto.response.TransferResponse;
 import com.flowpay.transactions.entity.LedgerEntryEntity;
@@ -18,6 +19,7 @@ import com.flowpay.wallet.repository.WalletRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,6 +37,7 @@ public class TransferService {
     private final WalletRepository walletRepository;
     private final WalletTransactionRepository transactionRepository;
     private final LedgerEntryRepository ledgerEntryRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public TransferResponse transfer(
@@ -121,6 +124,17 @@ public class TransferService {
 
         walletRepository.saveAll(List.of(senderWallet, receiverWallet));
         ledgerEntryRepository.saveAll(List.of(debitEntry,creditEntry));
+
+        eventPublisher.publishEvent(
+                new TransactionCompletedEvent(
+                        transaction.getId(),
+                        transaction.getReferenceCode(),
+                        transaction.getType(),
+                        transaction.getAmount(),
+                        transaction.getCurrency()
+                )
+        );
+
 
         return TransferResponse.builder()
                 .transactionId(transaction.getId())
