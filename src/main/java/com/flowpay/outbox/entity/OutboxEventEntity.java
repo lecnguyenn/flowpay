@@ -30,9 +30,9 @@ public class OutboxEventEntity {
     private String aggregateType;
 
     @Column(name = "aggregate_id", nullable = false)
-    private String aggregateId;
+    private Long aggregateId;
 
-    @Column(name = "event_type", nullable = false)
+    @Column(name = "event_types", nullable = false)
     private String eventType;
 
     @JdbcTypeCode(SqlTypes.JSON)

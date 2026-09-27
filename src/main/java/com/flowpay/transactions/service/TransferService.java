@@ -163,8 +163,8 @@ public class TransferService {
                 .referenceCode(transaction.getReferenceCode())
                 .amount(transaction.getAmount())
                 .status(transaction.getStatus())
-                .receiverWalletId(creditEntry.getId())
-                .senderWalletId(debitEntry.getId())
+                .receiverWalletId(creditEntry.getWallet().getId())
+                .senderWalletId(debitEntry.getWallet().getId())
                 .build();
     }
 
