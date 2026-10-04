@@ -25,10 +25,22 @@ spring:
       properties:
         enable.idempotence: true
         acks: all
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
 app:
   kafka:
     topics:
       transaction-completed: flowpay.transaction.completed.v1
+
+    consumer-groups:
+      notification: flowpay-notification-group
+  outbox:
+    publisher:
+      fixed-delay: 5000
 
 
 security:
