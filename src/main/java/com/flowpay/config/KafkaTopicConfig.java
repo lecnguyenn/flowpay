@@ -18,6 +18,12 @@ public class KafkaTopicConfig {
                 .partitions(3)
                 .replicas(1)
                 .build();
+    }
 
+    @Bean NewTopic transactionCompletedDtlTopic(@Value("${app.kafka.topics.transaction-completed-dtl}") String topicName) {
+        return TopicBuilder.name(topicName)
+                .partitions(3)
+                .replicas(1)
+                .build();
     }
 }

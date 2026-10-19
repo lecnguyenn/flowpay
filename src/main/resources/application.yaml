@@ -35,6 +35,7 @@ app:
   kafka:
     topics:
       transaction-completed: flowpay.transaction.completed.v1
+      transaction-completed-dtl: flowpay.transaction.completed.v1.DTL
 
     consumer-groups:
       notification: flowpay-notification-group

@@ -1,14 +1,19 @@
 package com.flowpay.notification.consumer;
 
 
+import com.flowpay.notification.service.TransactionEventProcessor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class TransactionCompletedConsumer {
+
+    private final TransactionEventProcessor transactionEventProcessor;
 
 
     @KafkaListener(
@@ -30,5 +35,6 @@ public class TransactionCompletedConsumer {
                 record.partition(),
                 record.offset()
                 );
+        transactionEventProcessor.process(record);
     }
 }
