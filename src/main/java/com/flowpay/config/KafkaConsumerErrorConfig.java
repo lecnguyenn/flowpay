@@ -4,6 +4,7 @@ package com.flowpay.config;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
@@ -17,6 +18,7 @@ public class KafkaConsumerErrorConfig {
     private static final long RETRY_INTERNAL_MILLISECONDS = 2_000L;
     private static final long MAX_RETRY_COUNT = 2L;
 
+    @Bean
     public DefaultErrorHandler kafkaErrorHandler(KafkaTemplate<String, String> kafkaTemplate,
                                                  @Value("app.kafka.topics.transaction-completed-dtl")
                                                  String deadLetterTopic
