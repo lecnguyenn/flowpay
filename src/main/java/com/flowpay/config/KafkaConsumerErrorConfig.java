@@ -20,7 +20,7 @@ public class KafkaConsumerErrorConfig {
 
     @Bean
     public DefaultErrorHandler kafkaErrorHandler(KafkaTemplate<String, String> kafkaTemplate,
-                                                 @Value("app.kafka.topics.transaction-completed-dtl")
+                                                 @Value("${app.kafka.topics.transaction-completed-dtl}")
                                                  String deadLetterTopic
                                                  ){
         DeadLetterPublishingRecoverer recover = new DeadLetterPublishingRecoverer(kafkaTemplate, (recorded,

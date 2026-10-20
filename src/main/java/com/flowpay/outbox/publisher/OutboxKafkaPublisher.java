@@ -43,11 +43,7 @@ public class OutboxKafkaPublisher {
         addHeader(producerRecord, EVENT_TYPE_HEADER, event.getEventType());
         addHeader(producerRecord, AGGREGATE_TYPE_HEADER, event.getAggregateType());
 
-        SendResult<String, String> result = kafkaTemplate.send(
-                transactionCompletedTopic,
-                    messageKey,
-                    messageValue
-        ).join();
+        SendResult<String, String> result = kafkaTemplate.send(producerRecord).join();
 
         log.info("Published outbox event successfully: eventId={}, aggregateId={}, topic={}, partition={}, offset={}"
                 , event.getId(), event.getAggregateId(), result.getRecordMetadata().topic(),
