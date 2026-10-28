@@ -1,7 +1,7 @@
 package com.flowpay.event;
 
-import com.flowpay.transactions.enums.TransactionType;
-import com.flowpay.wallet.enums.CurrencyCode;
+import com.flowpay.enums.TransactionType;
+import com.flowpay.enums.CurrencyCode;
 
 import java.math.BigDecimal;
 
